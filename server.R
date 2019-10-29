@@ -47,7 +47,7 @@ shinyServer(function(input, output, session) {
 
     observeEvent(input$save, {
       tryCatch({
-        cat(file = stderr(), session$clientData)
+        cat(session$clientData, file = stderr())
         file_to_upload <- synapser::File(
           input$file$datapath,
           parent = folder,
