@@ -33,16 +33,28 @@ shinyServer(function(input, output, session) {
     output$title <- renderUI({
       titlePanel(sprintf("Welcome, %s", synGetUserProfile()$userName))
     })
-    
-    output$distPlot <- renderPlot({
-      
-      # generate bins based on input$bins from ui.R
-      x    <- faithful[, 2]
-      bins <- seq(min(x), max(x), length.out = input$bins + 1)
-      
-      # draw the histogram with the specified number of bins
-      hist(x, breaks = bins, col = 'darkgray', border = 'white')
-      
+
+    folder <- try({
+      new_folder <- synapser::Folder(
+        name = "ServerTest",
+        parent = "syn20400157"
+      )
+      created_folder <- synapser::synStore(new_folder)
+      created_folder
+    })
+
+    observeEvent(input$save, {
+      tryCatch({
+        file_to_upload <- synapser::File(
+          input$file$datapath,
+          parent = folder,
+          name = input$file$name
+        )
+        synapser::synStore(file_to_upload)
+      },
+      error = function(err) {
+        output$error <- renderText({err$message})
+      })
     })
   })    
 })
