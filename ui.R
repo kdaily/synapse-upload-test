@@ -26,5 +26,6 @@ shinyUI(fluidPage(
 
   fileInput("file", "Choose a file to upload"),
   actionButton("save", "Save"),
-  textOutput("error")
+  textOutput("error"),
+  textOutput("clientdataText")
 ))
