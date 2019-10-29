@@ -36,14 +36,6 @@ shinyServer(function(input, output, session) {
       titlePanel(sprintf("Welcome, %s", synGetUserProfile()$userName))
     })
 
-    folder <- try({
-      new_folder <- synapser::Folder(
-        name = "ServerTest",
-        parent = "syn20400157"
-      )
-      created_folder <- synapser::synStore(new_folder)
-      created_folder
-    })
 
     observeEvent(input$save, {
       cdata <- session$clientData
@@ -61,10 +53,13 @@ shinyServer(function(input, output, session) {
       tryCatch({
         file_to_upload <- synapser::File(
           input$file$datapath,
-          parent = folder,
+          parent = "syn21068819",
           name = input$file$name
         )
-        synapser::synStore(file_to_upload)
+        stored <- synapser::synStore(file_to_upload)
+        output$stored <- renderText({
+          stored
+        })
       },
       error = function(err) {
         output$error <- renderText({err$message})
