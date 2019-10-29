@@ -21,10 +21,15 @@ list_to_string <- function(obj, listname) {
 # https://www.synapse.org
 
 library(shiny)
-library(synapser)
+library(reticulate)
+
+# This is the path to python3 on the Shiny Server
+reticulate::use_python("/usr/bin/python3", required = TRUE)
 
 shinyServer(function(input, output, session) {
 
+  synapse <- import("synapseclient")
+  
   session$sendCustomMessage(type = "readCookie", message = list())
 
   ## Show message if user is not logged in to synapse
@@ -39,10 +44,11 @@ shinyServer(function(input, output, session) {
 
   foo <- observeEvent(input$cookie, {
 
-    synLogin(sessionToken = input$cookie)
+    syn <- synapse$Synapse(debug = TRUE)
+    syn$login(sessionToken = input$cookie)
 
     output$title <- renderUI({
-      titlePanel(sprintf("Welcome, %s", synGetUserProfile()$userName))
+      titlePanel(sprintf("Welcome, %s", syn$getUserProfile()$userName))
     })
 
 
@@ -60,12 +66,12 @@ shinyServer(function(input, output, session) {
       })
 
       tryCatch({
-        file_to_upload <- synapser::File(
+        file_to_upload <- synapse$File(
           input$file$datapath,
-          parent = "syn21068819",
+          parentId = "syn21068819",
           name = input$file$name
         )
-        stored <- synapser::synStore(file_to_upload)
+        stored <- syn$store(file_to_upload)
         output$stored <- renderText({
           list_to_string(
             list(
