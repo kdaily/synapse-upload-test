@@ -48,7 +48,7 @@ shinyServer(function(input, output, session) {
     syn$login(sessionToken = input$cookie)
 
     output$title <- renderUI({
-      titlePanel(sprintf("Welcome, %s", syn$getUserProfile()$userName))
+      titlePanel(sprintf("USING RETICULATE - Welcome, %s", syn$getUserProfile()$userName))
     })
 
 
