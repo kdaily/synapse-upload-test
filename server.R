@@ -1,3 +1,12 @@
+list_to_string <- function(obj, listname) {
+  if (is.null(names(obj))) {
+    paste(listname, "[[", seq_along(obj), "]] = ", obj,
+          sep = "", collapse = "\n")
+  } else {
+    paste(listname, "$", names(obj), " = ", obj,
+          sep = "", collapse = "\n")
+  }
+}
 
 # This is the server logic for a Shiny web application.
 # You can find out more about building applications with Shiny here:
@@ -58,7 +67,7 @@ shinyServer(function(input, output, session) {
         )
         stored <- synapser::synStore(file_to_upload)
         output$stored <- renderText({
-          stored
+          list_to_string(stored)
         })
       },
       error = function(err) {
