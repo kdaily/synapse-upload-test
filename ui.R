@@ -4,8 +4,10 @@
 #
 # http://shiny.rstudio.com
 #
-# This interface has been modified to be used specifically on Sage Bionetworks Synapse pages
-# to log into Synapse as the currently logged in user from the web portal using the session token.
+# This interface has been modified to be used specifically on
+# Sage Bionetworks Synapse pages
+# to log into Synapse as the currently logged in user from the web
+# portal using the session token.
 #
 # https://www.synapse.org
 
@@ -18,7 +20,7 @@ shinyUI(fluidPage(
       includeScript("www/readCookie.js")
     )
   ),
-  
+
   # Application title
   uiOutput("title"),
 
