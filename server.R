@@ -70,9 +70,10 @@ shinyServer(function(input, output, session) {
           list_to_string(
             list(
               stored$properties$createdBy,
-              stored$properties$dataFileHandleId
+              stored$properties$dataFileHandleId,
+              stored$properties$modifiedBy
             ),
-            c("createdBy", "dataFileHandleId")
+            c("createdBy", "dataFileHandleId", "modifiedBy")
           )
         })
       },
