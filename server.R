@@ -67,7 +67,10 @@ shinyServer(function(input, output, session) {
         )
         stored <- synapser::synStore(file_to_upload)
         output$stored <- renderText({
-          list_to_string(stored)
+          list_to_string(
+            list(stored$createdBy, stored$dataFileHandleId),
+            c("createdBy", "dataFileHandleId")
+          )
         })
       },
       error = function(err) {
